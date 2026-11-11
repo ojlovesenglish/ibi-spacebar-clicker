@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>APEX BEAST // English Vocabulary Clicker</title>
+  
+  <!-- iPad / iOS Standalone Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Apex Beast">
+  <meta name="theme-color" content="#07090e">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- Cyberpunk / Sci-Fi & Japanese Rounded Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700;800;900&family=M+PLUS+Rounded+1c:wght@500;700;800;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Frenzy 7x Overdrive Active Banner -->
+  <div id="frenzyBanner" class="frenzy-active-banner">
+    ⚡ 7x HYPER OVERDRIVE FRENZY ACTIVE! <span class="ja-inline">【7倍フィーバー発動中！】</span> [<span id="frenzyTimerText">20s</span>] ⚡
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Top HUD Navigation / Brand & Power Dashboard -->
+    <header class="apex-header">
+      <div class="brand-section">
+        <div class="brand-emblem">⚡</div>
+        <div class="brand-text">
+          <h1>
+            APEX BEAST
+            <span class="brand-ja-tag ja-text">頂点獣クリッカー</span>
+          </h1>
+          <div class="brand-subtitle">
+            English Tactical Vocabulary Engine
+            <span class="ja-text">・英語ボキャブラリー学習</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Power Counters -->
+      <div class="power-dashboard">
+        <div class="power-stat">
+          <span class="stat-label">
+            ANIMAL POWER (AP)
+            <span class="stat-ja ja-text">アニマルパワー</span>
+          </span>
+          <span id="pointsDisplay" class="stat-value">0</span>
+        </div>
+        <div class="power-stat">
+          <span class="stat-label">
+            PRODUCTION RATE
+            <span class="stat-ja ja-text">生産速度 (毎秒)</span>
+          </span>
+          <span id="ppsDisplay" class="stat-value pps-value">0 / sec</span>
+        </div>
+        <div class="power-stat">
+          <span class="stat-label">
+            COMBAT RANK
+            <span class="stat-ja ja-text">戦闘ランク</span>
+          </span>
+          <span class="stat-value" style="font-size: 1rem; color: #ffe600; display:flex; align-items:center; gap:4px;">
+            <span id="rankBadge">⭐</span> <span id="rankTitle">CADET RECRUIT</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Controls & Settings -->
+      <div class="header-controls">
+        <button id="testAudioBtn" class="hud-btn" title="Test Sound Effects and English Speech Pronunciation">
+          <span>🔊</span> <span class="btn-label-en">TEST AUDIO</span><span class="btn-label-ja ja-text">音声テスト</span>
+        </button>
+        <button id="soundToggleBtn" class="hud-btn active" title="Toggle Sound Effects">
+          <span>🎵</span> <span class="btn-label">SFX: ON</span>
+        </button>
+        <button id="voiceToggleBtn" class="hud-btn active" title="Toggle English Pronunciation">
+          <span>🗣️</span> <span class="btn-label">VOICE: ON</span>
+        </button>
+        <button id="jaToggleBtn" class="hud-btn active" title="Toggle Japanese Helper Translations">
+          <span>🌐</span> <span class="btn-label">日本語: ON</span>
+        </button>
+        <button id="teacherBtn" class="hud-btn danger" title="Teacher Customization Panel">
+          <span>⚙️</span> <span class="btn-label-en">TEACHER</span><span class="btn-label-ja ja-text">先生</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Game Workspace: 3 Columns -->
+    <main class="game-grid">
+
+      <!-- ================================================================== -->
+      <!-- COLUMN 1: THE BEAST CORE & ACTIVE WORD HUD -->
+      <!-- ================================================================== -->
+      <section class="core-column">
+        
+        <!-- Interactive Clicker Core -->
+        <div class="panel-box core-arena">
+          <div class="panel-header" style="width:100%; margin-bottom: 12px;">
+            <span class="panel-title">
+              ⚡ BEAST CORE ENGINE
+              <span class="panel-ja ja-text">ビースト・コア</span>
+            </span>
+            <span id="comboValue" style="font-size:0.75rem; color:var(--gold); font-family:var(--font-mono);">COMBO: x0</span>
+          </div>
+
+          <!-- Central Button with Orbit Rings & Floating Damage -->
+          <div class="beast-core-wrapper">
+            <div class="core-outer-ring"></div>
+            <div class="core-inner-ring"></div>
+
+            <button id="beastCoreBtn" class="beast-core-btn" title="Tap or Press Spacebar!">
+              <div id="coreArt" class="core-art">
+                <!-- SVG inserted dynamically -->
+              </div>
+            </button>
+
+            <!-- Floating Words & Damage Numbers Container -->
+            <div id="floatingWordContainer" class="floating-word-container"></div>
+          </div>
+
+          <!-- Tactical Spacebar HUD Indicator -->
+          <div class="spacebar-hud">
+            <div id="spacebarKey" class="spacebar-key-graphic">
+              [ SPACEBAR <span class="key-ja ja-text">スペース</span> ]
+            </div>
+            <div class="spacebar-label">
+              <span class="spacebar-label-en">TAP SCREEN OR HIT SPACEBAR</span>
+              <span class="spacebar-label-ja ja-text">画面タップ または スペースキー！</span>
+            </div>
+          </div>
+
+          <!-- AI Auto-Spacebar Overdrive Controls -->
+          <div class="ai-bot-panel">
+            <button id="aiAutoBtn" class="ai-auto-btn" title="Let the AI smash the spacebar at superhuman speed! (Press 'A' on keyboard)">
+              <div class="ai-btn-glow"></div>
+              <div class="ai-btn-content">
+                <span class="ai-bot-icon">🤖</span>
+                <div class="ai-bot-text">
+                  <div class="ai-bot-title">
+                    AI AUTO-STRIKE
+                    <span class="ai-bot-ja ja-text">AI自動連打</span>
+                  </div>
+                  <div id="aiBotStatus" class="ai-bot-status">READY // 35 CLICKS/SEC</div>
+                </div>
+              </div>
+              <div id="aiCooldownGauge" class="ai-cooldown-gauge"></div>
+            </button>
+            <div class="ai-bot-subtext">
+              <span class="ai-sub-en">⚡ 35 HZ CYBER OVERDRIVE • SAVES YOUR KEYBOARD! [HOTKEY: A]</span>
+              <span class="ai-sub-ja ja-text">⚡ 秒速35回オート連打 • キーボードを守る！ [キー: A]</span>
+            </div>
+          </div>
+
+          <!-- Combo Bar -->
+          <div class="combo-meter-container">
+            <div class="combo-bar-track">
+              <div id="comboBarFill" class="combo-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active English Vocabulary Showcase Card -->
+        <div class="panel-box active-animal-card">
+          <div class="panel-header" style="margin:-14px -14px 10px -14px;">
+            <span class="panel-title">
+              🎯 ACTIVE VOCABULARY
+              <span class="panel-ja ja-text">いま勉強中の単語</span>
+            </span>
+            <span style="font-size:0.7rem; color:var(--text-dim);">
+              <span class="sub-en">CLICK OR PRESS TO STUDY</span>
+              <span class="sub-ja ja-text">タップで練習</span>
+            </span>
+          </div>
+
+          <div class="animal-name-row">
+            <div class="active-word-group">
+              <span id="activeWord" class="animal-word-large">DOG</span>
+              <span id="activeJaLarge" class="active-ja-large ja-text">犬 (いぬ) [ドッグ]</span>
+            </div>
+            <button id="activePronounceBtn" class="pronounce-btn" title="Listen to English Pronunciation">
+              <span>🔊</span> <span>LISTEN</span><span class="ja-inline ja-text">きく</span>
+            </button>
+          </div>
+
+          <div class="animal-phonetic-row">
+            <span id="activePhonetic" class="phonetic-badge">/dɔːɡ/</span>
+            <span id="activeJa" class="ja-meaning ja-text">犬 (いぬ)</span>
+          </div>
+
+          <p id="activeDesc" class="animal-desc-text">
+            Loyal scout hound. High reflex barks generate steady power.
+          </p>
+
+          <div id="activeFact" class="animal-fact-box">
+            <strong>TACTICAL TRIVIA:</strong> Dogs have an extraordinary sense of smell — up to 100,000 times stronger than humans!
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- COLUMN 2: BEAST ROSTER (SHOP & PROGRESSION) -->
+      <!-- ================================================================== -->
+      <section class="roster-column">
+        <div class="panel-box" style="padding: 12px;">
+          
+          <!-- Roster Filter Controls -->
+          <div class="roster-controls">
+            <div class="tier-tabs">
+              <button class="tier-tab-btn active" data-tier="all">
+                <span class="tab-en">ALL UNITS</span>
+                <span class="tab-ja ja-text">すべて</span>
+              </button>
+              <button class="tier-tab-btn" data-tier="1">
+                <span class="tab-en">TIER 1: RECON</span>
+                <span class="tab-ja ja-text">基本の動物</span>
+              </button>
+              <button class="tier-tab-btn" data-tier="2">
+                <span class="tab-en">TIER 2: PREDATOR</span>
+                <span class="tab-ja ja-text">野生・肉食</span>
+              </button>
+              <button class="tier-tab-btn" data-tier="3">
+                <span class="tab-en">TIER 3: APEX TITANS</span>
+                <span class="tab-ja ja-text">最強の巨獣</span>
+              </button>
+            </div>
+
+            <!-- Buy Multipliers -->
+            <div class="buy-multiplier-group">
+              <span style="font-size:0.7rem; color:var(--text-dim); align-self:center; margin-right:4px;">
+                <span class="buy-lbl-en">BUY:</span>
+                <span class="buy-lbl-ja ja-text">かう:</span>
+              </span>
+              <button class="buy-mult-btn active" data-mult="1">1x</button>
+              <button class="buy-mult-btn" data-mult="10">10x</button>
+              <button class="buy-mult-btn" data-mult="max">MAX</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Scrollable Cards List -->
+        <div id="rosterList" class="roster-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- COLUMN 3: TACTICAL ARSENAL (ACTION VERBS & ADJECTIVES) -->
+      <!-- ================================================================== -->
+      <section class="arsenal-column">
+        <div class="panel-box">
+          <div class="panel-header">
+            <span class="panel-title">
+              ⚔️ TACTICAL ARSENAL
+              <span class="panel-ja ja-text">作戦強化</span>
+            </span>
+            <span style="font-size:0.7rem; color:var(--cyan-glow);">
+              VOCAB BOOSTERS
+              <span class="ja-inline ja-text">単語強化</span>
+            </span>
+          </div>
+
+          <div class="arsenal-tabs">
+            <button class="arsenal-tab-btn active" data-tab="verbs">
+              <span class="tab-en">ACTION VERBS</span>
+              <span class="tab-ja ja-text">動詞 (どうさ)</span>
+            </button>
+            <button class="arsenal-tab-btn" data-tab="adjectives">
+              <span class="tab-en">ADJECTIVES</span>
+              <span class="tab-ja ja-text">形容詞 (ようす)</span>
+            </button>
+            <button class="arsenal-tab-btn" data-tab="mods">
+              <span class="tab-en">TECH MODS</span>
+              <span class="tab-ja ja-text">特殊メカ</span>
+            </button>
+          </div>
+
+          <div id="arsenalContent" class="arsenal-content">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- MODALS -->
+  <!-- ====================================================================== -->
+
+  <!-- Word Challenge Modal (Golden Beast Encounter) -->
+  <div id="challengeModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-title">⚡ WILD BEAST INTERCEPT!</span>
+        <button id="closeChallengeBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher Control Panel Modal -->
+  <div id="teacherModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <span class="modal-title">🛠️ TEACHER COMMAND CONSOLE</span>
+        <button id="closeTeacherBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="animals-data.js"></script>
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
